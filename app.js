@@ -13,34 +13,37 @@ mongoose.connect(
     .then(() => {
         console.log("MongoDB Connected");
 
-        })
+    })
 
-.catch((err) => {
-    console.log(err);
-        });
-
-
-        const course = mongoose.model("CampRegistration", new mongoose.Schema(
-            {
-                registrationId: String,
-                participantId: String,
-                campBatch: String,
-                campStartdate: String,
-                campEnddate: String,
-                preferredSession: String,
-                Accommodation: String,
-                MealPreference: String,
-                tshirtSize: String,
-                paymentStatus: String
-            }
-        ))
-        app.post("/add-campregistration", async (request, response) => {
-            await course.create(request.body)
-            response.json({ "status": "success" })
-        })
+    .catch((err) => {
+        console.log(err);
+    });
 
 
+const course = mongoose.model("CampRegistration", new mongoose.Schema(
+    {
+        registrationId: String,
+        participantId: String,
+        campBatch: String,
+        campStartdate: String,
+        campEnddate: String,
+        preferredSession: String,
+        Accommodation: String,
+        MealPreference: String,
+        tshirtSize: String,
+        paymentStatus: String
+    }
+))
+app.post("/add-campregistration", async (request, response) => {
+    await course.create(request.body)
+    response.json({ "status": "success" })
+})
+app.post("/view-campregistration", async (request, response) => {
+    const data = await course.find();
+    response.json(data);
+});
 
-        app.listen(3000, () => {
-            console.log("Server Started")
-        })
+
+app.listen(3000, () => {
+    console.log("Server Started")
+})

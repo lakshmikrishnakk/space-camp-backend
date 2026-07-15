@@ -19,7 +19,6 @@ mongoose.connect(
         console.log(err);
     });
 
-
 const course = mongoose.model("CampRegistration", new mongoose.Schema(
     {
         registrationId: String,
@@ -34,12 +33,41 @@ const course = mongoose.model("CampRegistration", new mongoose.Schema(
         paymentStatus: String
     }
 ))
+
+
+
+const courses = mongoose.model("ParticipantRegistration", new mongoose.Schema(
+    {
+        participantId: String,
+        fullName: String,
+        dob: String,
+        gender: String,
+        schoolName: String,
+        grade: String,
+        email: String,
+        mobile: String,
+        address: String,
+        guardianName: String
+    }
+))
 app.post("/add-campregistration", async (request, response) => {
     await course.create(request.body)
     response.json({ "status": "success" })
 })
+
+
+app.post("/add-participantregistration", async (request, response) => {
+    await courses.create(request.body)
+    response.json({ "status": "success" })
+})
+
 app.post("/view-campregistration", async (request, response) => {
     const data = await course.find();
+    response.json(data);
+});
+
+app.post("/view-participantregistration", async (request, response) => {
+    const data = await courses.find();
     response.json(data);
 });
 
